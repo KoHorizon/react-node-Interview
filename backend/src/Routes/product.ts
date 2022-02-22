@@ -11,6 +11,3 @@ router.get('/:id', productControllerGet);
 router.post('/', productControllerPost);
 router.put('/:id', productControllerPut);
 router.delete('/:id', productControllerDelete);
-
-
-

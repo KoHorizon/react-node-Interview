@@ -15,6 +15,3 @@ export async function authControllerPost(req: Request, res: Response) {
 }
 
 
-export async function authControllerGet(req: Request, res: Response) {
-	console.log('test');
-}

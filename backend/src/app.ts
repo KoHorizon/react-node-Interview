@@ -3,7 +3,10 @@ import router from './Routes';
 import jwtexpress from 'express-jwt';
 import Config from './Config';
 
+import mongoose from 'mongoose';
 
+
+mongoose.connect('mongodb://mongo:27017', {pass: 'stage', user: 'dev', dbName:'Stage'});
 
 
 const app = express();
