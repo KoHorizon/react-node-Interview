@@ -5,7 +5,7 @@ import request from '../utils/request';
 
 export const login = (data: Credential): AxiosPromise<ResponseAuth> =>
     request({
-        url: "/auth",
-        method: "POST",
+        url: '/auth',
+        method: 'POST',
         data
     })

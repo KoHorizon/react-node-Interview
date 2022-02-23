@@ -33,9 +33,7 @@ export async function deleteProduct(id: number) {
 	return await Products.deleteOne({ _id: id }).exec();
 }
 
-export async function editProduct(id: number, productObject: Omit<Product,'_id'> ) {
-	return await Products.updateOne({_id: id}, {
-		...productObject,_id:id
-	});
+export async function editProduct(id: number, productObject: Omit<Product,'_id' | 'rating' | 'type' > ) {
+	return await Products.findOneAndUpdate({_id: id}, productObject, {upsert: true}).exec();
 	// return await Products.deleteOne({ _id: id }).exec();
 }

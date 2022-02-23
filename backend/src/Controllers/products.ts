@@ -1,5 +1,7 @@
 import { Response, Request } from 'express';
 import { createProducts, deleteProduct, editProduct, findProducts, findProductsById } from '../Database';
+import { Product } from '../types/product';
+import { ProductSchema } from '../Validate/product';
 import productCreateValidate from '../Validate/product_create';
 import productEditValidate from '../Validate/product_edit';
 
@@ -65,5 +67,34 @@ export async function productControllerPut(req: Request, res: Response) {
 
 
 
+
+
+
 }
 
+
+
+export async function productControllerPatch(req: Request, res: Response) {
+	const id = parseInt(req.params.id);
+  
+	if (isNaN(id)) return res.status(404).json({ status: 404, message: 'not found"'});
+  
+	const { value, error } = ProductSchema.validate(req.body);
+  
+	if (error) return res.status(400).json({ status: 400, message: 'bad request', error: error.details.map(item => item.message) });
+	if (!value) return res.status(400).json({ status: 400, message: 'bad request' });
+	
+
+	
+
+	Object.keys(value).map((item) => {
+		const key = item as keyof Omit<Product, '_id' | 'rating'>;
+		if (!value[key]) {
+			delete value[key];
+		}
+	});
+	// database
+	const product = await editProduct(id, value);
+	if (!product) return res.status(500).json({status: 500, message: 'internal error'});
+	res.json(product.toJSON());
+}

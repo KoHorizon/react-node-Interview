@@ -1,49 +1,27 @@
-import { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { login } from './api/auth';
-import { findAll } from './api/products';
-
-
+import React, { useEffect, useState } from 'react';
+import Login  from './components/login';
+import ProductListing from './components/productListing';
 function App() {
 
+  const checkIfAuth = () => {
+    if (localStorage.getItem('token')) setAuth(true) 
+  };
 
-  const [title, setTitle] = useState('')
+  const [auth, setAuth] = useState(false);
 
+  useEffect(() => {
+    checkIfAuth();
+  },[])
 
-  const loginZ = async(password:string) => {
-    
-    const passObj = {
-      password: password
-    }
-    try {
-      const { data } = await login(passObj);
-      console.log(data);
-      
-      localStorage.setItem('token' , data.access_token);
-    } catch (err) {
-      console.log(err,'etzerez');
-      
-    }
-  }
-
-  const tData = async () => {
-    try {
-      const { data } = await  findAll();
-      console.log(data);
-      
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
 
   return (
-    <div className="App">
-      <input type="text" onChange={(event) => setTitle(event.target.value)}/>
-      <button onClick={() => loginZ(title)}>send it</button>
-      <button onClick={() => tData()}>take data's</button>
-    </div>
+    <>
+    { !auth ? <Login setAuth={setAuth} /> : <ProductListing/> }
+      
+
+    </>
   )
 }
 
