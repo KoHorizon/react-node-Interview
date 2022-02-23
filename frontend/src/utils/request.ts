@@ -12,24 +12,24 @@ const service = axios.create({
     timeout: 5000,
 });
 
-service.interceptors.request.use( function (config) {
+service.interceptors.request.use( function (req) {
     
-    if (!config.url) return config;
-    const url = removePrefix(config.url,baseURL);
+    if (!req.url) return req;
+    const url = removePrefix(req.url,baseURL);
     
-    console.log(config);
+    console.log(req);
     
-    if (prefixWhiteList.filter((item) => url.startsWith(item)).length > 0) return config; 
+    if (prefixWhiteList.filter((item) => url.startsWith(item)).length > 0) return req; 
     
     const token = localStorage.getItem('token');
     
-    if(!token) return config;
+    if(!token) return req;
     
-    if(!config.headers) config.headers = {};
+    if(!req.headers) req.headers = {};
     
-    config.headers.Authorization = `Bearer ${token}`;
+    req.headers.Authorization = `Bearer ${token}`;
     
-    return config;
+    return req;
 });
 
 export default service;

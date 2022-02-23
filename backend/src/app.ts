@@ -5,8 +5,13 @@ import Config from './Config';
 import cors from 'cors';
 import mongoose from 'mongoose';
 
+console.log(Config.database);
 
-mongoose.connect('mongodb://mongo:27017', {pass: 'stage', user: 'dev', dbName:'Stage'});
+mongoose.connect(Config.database.host, {
+	pass: Config.database.pass,
+	user: Config.database.user,
+	dbName: Config.database.dbName
+});
 
 
 const app = express();
