@@ -9,5 +9,6 @@ router.use('/auth', auth);
 router.use('/products', products);
 
 
-
-export default router;
+const baseRoute = Router();
+baseRoute.use('/api',router);
+export default baseRoute;

@@ -1,5 +1,17 @@
 version: '3'
 services:
+  frontend:
+    container_name: Front-React-TS
+    restart: always
+    build:
+      context: ./frontend
+      dockerfile: ./docker/Dockerfile.dev
+    command: "./start_dev.sh"
+    ports:
+      - '3000:3000'
+    volumes:
+      - "./frontend:/usr/src/app"
+
   backend:
     container_name: API-Container
     restart: always
@@ -8,11 +20,12 @@ services:
       dockerfile: ./docker/Dockerfile.dev
     command: "./start_dev.sh"
     ports:
-      - '3000:3000'
+      - '3001:3000'
     volumes:
       - "./backend:/usr/src/app"
     depends_on:
       - mongo
+
   mongo:
     container_name: mongo
     image: mongo

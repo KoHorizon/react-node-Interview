@@ -2,10 +2,10 @@ import Products, { Product } from '../Models/products';
 
 
 export async function createProducts(data: Omit<Product,'_id'>) {
-  
+
 	const value = await Products.find({},'_id').sort({ _id: -1 }).limit(1).exec();
 	const id = value[0]._id+1;
-  
+
 	const docs = await Products.create({ 
 		_id: id,
 		name: data.name, 
@@ -17,7 +17,6 @@ export async function createProducts(data: Omit<Product,'_id'>) {
 	});
 	await docs.save();
 	return docs;
-  
 }
 
 export async function findProducts() {

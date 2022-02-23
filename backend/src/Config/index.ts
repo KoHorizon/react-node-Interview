@@ -3,5 +3,6 @@ config();
 
 export default {
 	jwtSecret : process.env.MY_SECRET_PASS || '',
-	password : process.env.PASSWORD || ''
+	password : process.env.PASSWORD || '',
+	port : parseInt(process.env.PORT || '3000',10)
 };
