@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { removePrefix } from './rmPrefix';
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+const baseURL = `http://${import.meta.env.VITE_API_HOST}/api`;
 
 
 const prefixWhiteList = [
