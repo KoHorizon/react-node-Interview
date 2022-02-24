@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 import { removePrefix } from './rmPrefix';
-const baseURL = "http://localhost:3001/api";
+const baseURL = 'http://localhost:3001/api';
 
 
 const prefixWhiteList = [

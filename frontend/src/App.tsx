@@ -4,25 +4,25 @@ import Login  from './components/login';
 import ProductListing from './components/productListing';
 function App() {
 
-  const checkIfAuth = () => {
-    if (localStorage.getItem('token')) setAuth(true) 
-  };
+    const checkIfAuth = () => {
+        if (localStorage.getItem('token')) setAuth(true);
+    };
 
-  const [auth, setAuth] = useState(false);
+    const [auth, setAuth] = useState(false);
 
-  useEffect(() => {
-    checkIfAuth();
-  },[])
+    useEffect(() => {
+        checkIfAuth();
+    },[]);
 
 
 
-  return (
-    <>
-    { !auth ? <Login setAuth={setAuth} /> : <ProductListing/> }
+    return (
+        <>
+            { !auth ? <Login setAuth={setAuth} /> : <ProductListing/> }
       
 
-    </>
-  )
+        </>
+    );
 }
 
-export default App
+export default App;

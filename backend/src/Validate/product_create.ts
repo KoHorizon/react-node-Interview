@@ -2,8 +2,7 @@ import Joi from 'joi';
 
 
 const schema = Joi.object({
-	name: Joi.string()
-		.alphanum().min(3).max(30).required(),
+	name: Joi.string().min(3).max(30).required(),
 	type: Joi.string().required(),
 	price: Joi.number().required(),
 	rating: Joi.number().required(),

@@ -5,7 +5,6 @@ import Config from './Config';
 import cors from 'cors';
 import mongoose from 'mongoose';
 
-console.log(Config.database);
 
 mongoose.connect(Config.database.host, {
 	pass: Config.database.pass,

@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { deleteProduct, findAll } from '../api/products';
+import React, { useEffect, useState } from 'react';
+import { createProduct, deleteProduct, findAll, updateProduct } from '../api/products';
 import { Product } from '../types/product';
-import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Button, DialogTitle, Typography } from '@mui/material';
+import { Button, DialogTitle } from '@mui/material';
 import UpdateDialog from './editComponent';
 import CreateDialog from './createComponent';
 import { Box } from '@mui/system';
@@ -15,51 +14,22 @@ import { Box } from '@mui/system';
 
 
 
-const data = [''];
 
 
 export default function ProductListing() {
 
-    let interval = useRef();
 
-    useEffect(() => {
-        setInterval(() => {
-            try {
-                getProducts();
-            } catch (error) {
-                
-            }
-        },1000)
-    },[])
-
-    const getProducts = async() => {
-        try {
-            const { data } = await findAll();
-            setProducts(data)
-            
-        } catch (error) {
-            disconnect();            
-        }
-    }  
-
-
-
-
-
-
-
-    const [open, setOpen] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
     const [openCreate, setOpenCreate] = React.useState(false);
 
-    const [selectedValue, setSelectedValue] = React.useState(data[1]);
 
     const [editProduct, setEditProduct] = useState<Product>();
     const [products,setProducts] = useState<Product[]>([]);
 
 
     const handleClickOpen = (id: number) => {
-        setOpen(true);
-        const product = products.find((item) => item._id === id)
+        setOpenEdit(true);
+        const product = products.find((item) => item._id === id);
         if ( product ) setEditProduct(product); 
     };
 
@@ -69,98 +39,130 @@ export default function ProductListing() {
     };
 
 
-    const handleClose = (value: string) => {
-        setOpen(false);
+    const handleCloseEdit = () => {
+        setOpenEdit(false);
     };
 
-    const handleCloseCreate = (value: string) => {
+    const handleCloseCreate = () => {
         setOpenCreate(false);
     };
     
-
-
-    const handleDelete = async (id: number) => {
+    const handleCreateProduct = async (value: Omit<Product,'_id' | 'rating' > ) => {
         try {
-            const data = await deleteProduct(id);
+            const { data } = await createProduct(value); 
+            setProducts((items) => [...items, data]);  
+            handleCloseCreate();
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
-    }
+    };
+
+
+    const handleEditProduct = async (id: number, value: Omit<Product,'_id' | 'rating' | 'type'> ) => {
+        try {
+            const { data } = await updateProduct(id,value);    
+            setProducts((items) => items.map(item => item._id === id ? data : item ));  
+            handleCloseEdit();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleDeleteProduct = async (id:number) => {
+
+        const ok = confirm('This product is about to be deleted, do you confirm ?');
+        if (!ok) return;
+        try {
+            await deleteProduct(id);
+            setProducts((items) => items.filter(item => item._id !== id));
+        } catch (error) {
+            console.error(error);
+        }
+
+        
+    };
 
 
     const disconnect = async () => {
         localStorage.removeItem('token');
         return window.location.reload();
-    }
+    };
+
+    useEffect(() => {
+        findAll().then((res) => {
+            const data = res.data;
+            setProducts(data);
+        }).catch(console.error);
+    },[]);
 
 
     return (
-    <React.Fragment >
-        <div>
-        <Button variant="outlined" color="error" sx={{ m: 2 }} onClick={() => disconnect() }>
+        <React.Fragment >
+            <div>
+                <Button variant="outlined" color="error" sx={{ m: 2 }} onClick={() => disconnect() }>
         Disconnect
-        </Button> 
-        </div>
-      <Table >
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>type</TableCell>
-            <TableCell>price</TableCell>
-            <TableCell>rating</TableCell>
-            <TableCell>warranty years</TableCell>
-            <TableCell>available</TableCell>
-            <TableCell>Edit</TableCell>
-            <TableCell>Delete</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-        {
-            products ? products.map(({ _id,name,type,price,rating,warranty_years, available })=> {
-                return ( 
-            <TableRow key={_id}>
-                <TableCell>{name}</TableCell>
-                <TableCell>{type}</TableCell>
-                <TableCell>{price}</TableCell>
-                <TableCell>{rating}</TableCell>
-                <TableCell>{warranty_years}</TableCell>
-                <TableCell>{available ? 'Available' : 'Not Available'}</TableCell>
-                <TableCell>
-                    <Button variant="contained" onClick={() => handleClickOpen(_id)}>
-                        Edit
-                    </Button>    
-                </TableCell>
-                <TableCell>
-                <Button variant="outlined" color="error" onClick={() => handleDelete(_id)}>
-                    Delete
                 </Button> 
-                </TableCell>
-            </TableRow>)
-                }) : 
-                <DialogTitle>Create a product</DialogTitle>
+            </div>
+            <Table >
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>type</TableCell>
+                        <TableCell>price</TableCell>
+                        <TableCell>rating</TableCell>
+                        <TableCell>warranty years</TableCell>
+                        <TableCell>available</TableCell>
+                        <TableCell>Edit</TableCell>
+                        <TableCell>Delete</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                        products ? products.map(({ _id,name,type,price,rating,warranty_years, available })=> {
+                            return ( 
+                                <TableRow key={_id}>
+                                    <TableCell>{name}</TableCell>
+                                    <TableCell>{type}</TableCell>
+                                    <TableCell>{price}</TableCell>
+                                    <TableCell>{rating}</TableCell>
+                                    <TableCell>{warranty_years}</TableCell>
+                                    <TableCell>{available ? 'Available' : 'Not Available'}</TableCell>
+                                    <TableCell>
+                                        <Button variant="contained" onClick={() => handleClickOpen(_id)}>
+                                            Edit
+                                        </Button>    
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button variant="outlined" color="error" onClick={() => handleDeleteProduct(_id)}>
+                                            Delete
+                                        </Button> 
+                                    </TableCell>
+                                </TableRow>); 
+                        }) : 
+                            <DialogTitle>Create a product</DialogTitle>
                 
-            }
-        </TableBody>
-    </Table>
+                    }
+                </TableBody>
+            </Table>
 
-    <UpdateDialog
-        product={editProduct}
-        selectedValue={selectedValue}
-        open={open}
-        onClose={handleClose}
-        />
-    <CreateDialog
-        selectedValue={selectedValue}
-        open={openCreate}
-        onClose={handleCloseCreate}
-    />
-    <Box textAlign='center' sx={{ m: 5 }} >
-        <Button variant="outlined" size="large"sx={{ width: '75%' }} onClick={() => handleClickOpenCreate() }>
+            <UpdateDialog
+                update={handleEditProduct}
+                product={editProduct}
+                open={openEdit}
+                onClose={handleCloseEdit}
+            />
+            <CreateDialog
+                create={handleCreateProduct}
+                open={openCreate}
+                onClose={handleCloseCreate}
+            />
+            <Box textAlign='center' sx={{ m: 5 }} >
+                <Button variant="outlined" size="large"sx={{ width: '75%' }} onClick={() => handleClickOpenCreate() }>
             Creer
-        </Button> 
-    </Box>
+                </Button> 
+            </Box>
 
-    </React.Fragment>
+        </React.Fragment>
     );
 }
 
