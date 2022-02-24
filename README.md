@@ -10,3 +10,4 @@ cd react-node-Interview/
 docker-compose up
 // visit localhost:(port)
 ```
+Default port for front is 3000, `http://localhost`. 
