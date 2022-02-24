@@ -29,8 +29,8 @@ services:
       - MONGO_HOST=mongodb://mongo:27017
       - MONGO_DATABASE=Stage
       - PORT=3000
-      - USER_PASSWORD=pass
-      - JWT_SECRET=stagePass
+      - USER_PASSWORD=pass123
+      - JWT_SECRET=lkfdsfdkfoefscsdcmwsmfsdfskdsdccsdpcsdggdfgvvvcxvfhrsdscqdsfdsfxcvv
     depends_on:
       - mongo
 
