@@ -79,8 +79,8 @@ export default function UpdateDialog(props: SimpleDialogProps) {
         warranty_years,
         available
     }
-
     
+
     try {
         const data = await createProduct(createObj);
     } catch (error) {
