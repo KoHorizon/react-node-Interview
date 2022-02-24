@@ -52,7 +52,6 @@ export default function SignIn(props: LoginProps) {
 
     try {
         const { data } = await login(passwordObj);
-        console.log(data);
         localStorage.setItem('token' , data.access_token);
         props.setAuth(true)
     } catch (error) {

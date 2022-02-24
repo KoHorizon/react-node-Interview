@@ -78,7 +78,7 @@ export default function UpdateDialog(props: SimpleDialogProps) {
         rating,
         warranty_years,
         available
-    }
+    };
     
 
     try {
@@ -91,7 +91,6 @@ export default function UpdateDialog(props: SimpleDialogProps) {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
-    
   };
 
 
@@ -144,7 +143,6 @@ export default function UpdateDialog(props: SimpleDialogProps) {
               name="price"
               label="price"
               type="number"
-              InputProps={{ inputProps: { min: 0, max: 2200 } }}
               id="price"
             />
             <TextField
@@ -154,7 +152,6 @@ export default function UpdateDialog(props: SimpleDialogProps) {
               name="rating"
               label="rating"
               type="number"
-              InputProps={{ inputProps: { min: 0, max: 10 } }}
               id="rating"
             />
             <TextField
@@ -164,7 +161,6 @@ export default function UpdateDialog(props: SimpleDialogProps) {
               name="warranty_years"
               label="warranty_years"
               type="number"
-              InputProps={{ inputProps: { min: 0, max: 10 } }}
               id="password"
             />
             <FormControlLabel

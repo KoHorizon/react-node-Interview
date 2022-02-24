@@ -24,7 +24,11 @@ export default function ProductListing() {
 
     useEffect(() => {
         setInterval(() => {
-            getProducts();
+            try {
+                getProducts();
+            } catch (error) {
+                
+            }
         },1000)
     },[])
 
@@ -34,8 +38,7 @@ export default function ProductListing() {
             setProducts(data)
             
         } catch (error) {
-            console.log(error);
-            
+            disconnect();            
         }
     }  
 

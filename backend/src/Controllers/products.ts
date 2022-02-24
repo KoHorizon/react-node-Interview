@@ -8,7 +8,6 @@ import productEditValidate from '../Validate/product_edit';
 
 
 export async function productControllerPost(req: Request, res: Response) {
-
 	try {
 		const value = await productCreateValidate.validateAsync(req.body);
 		const createdProduct = await createProducts(value);
