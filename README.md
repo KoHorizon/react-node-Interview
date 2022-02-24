@@ -25,3 +25,16 @@ This Docker container might have issues to launch on Windows and Mac (Issues are
 If you are on Mac or Windows, please launch both folders separately.
 * Use the template file environnement `(.env.template)` to create a `.env` in backend ! 
 * If needed change the url of the backend in frontend file environnement `(.env)`
+
+
+## Stack used
+
+* Backend (Node/Typescript/Express)
+* Frontend (React/Typescript/ViteJS)
+
+Features :
+* JWT/Token Authentification 
+
+
+Tools:
+* ESLint 
