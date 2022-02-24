@@ -17,7 +17,6 @@ service.interceptors.request.use( function (req) {
     if (!req.url) return req;
     const url = removePrefix(req.url,baseURL);
     
-    console.log(req);
     
     if (prefixWhiteList.filter((item) => url.startsWith(item)).length > 0) return req; 
     

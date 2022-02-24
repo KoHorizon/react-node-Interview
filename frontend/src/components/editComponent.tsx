@@ -50,11 +50,6 @@ export default function UpdateDialog(props: SimpleDialogProps) {
 
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data.get('name'));
-    console.log(data.get('price'));
-    console.log(data.get('warranty_years'));
-    console.log(data.get('available'));
-
     const priceToString = data.get('price');
     const warrantyYearsToString = data.get('warranty_years');
 
@@ -66,22 +61,21 @@ export default function UpdateDialog(props: SimpleDialogProps) {
     const name = data.get('name');
     const price = parseInt(priceToString);
     const warranty_years = parseInt(warrantyYearsToString);
-
-
+    
+    
     if ( typeof name != 'string') return;
     if ( typeof price != 'number') return;
     if ( typeof warranty_years != 'number') return;
     
     const updateObj = {
-        name,
-        price,
-        warranty_years,
-        available
+      name,
+      price,
+      warranty_years,
+      available
     }
-
-
+    
     try {
-      const data = await updateProduct(product._id,updateObj);
+      const data = await updateProduct(product._id,updateObj);      
     } catch (error) {
       console.log(error);
     }
@@ -136,6 +130,7 @@ export default function UpdateDialog(props: SimpleDialogProps) {
               name="price"
               label="price"
               type="number"
+              InputProps={{ inputProps: { min: 0, max: 2000 } }}
               id="price"
             />
             <TextField
@@ -146,6 +141,7 @@ export default function UpdateDialog(props: SimpleDialogProps) {
               name="warranty_years"
               label="warranty_years"
               type="number"
+              InputProps={{ inputProps: { min: 0, max: 10 } }}
               id="password"
             />
             <FormControlLabel
@@ -159,6 +155,7 @@ export default function UpdateDialog(props: SimpleDialogProps) {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 1 }}
+              onClick={handleClose}
             >
               UPDATE
             </Button>

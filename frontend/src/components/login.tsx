@@ -23,8 +23,8 @@ function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://github.com/KoHorizon/react-node-Interview">
+        Rinoshan
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -35,10 +35,14 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignIn(props: LoginProps) {
+
+  const [error, setError] = React.useState(false);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
 
+
+    const data = new FormData(event.currentTarget);
     if (typeof data.get('password') != 'string') return;
     const password = data.get('password') as string;
 
@@ -52,7 +56,8 @@ export default function SignIn(props: LoginProps) {
         localStorage.setItem('token' , data.access_token);
         props.setAuth(true)
     } catch (error) {
-        console.log(error);
+      setError(true)
+      
     }
 };
 
@@ -84,10 +89,10 @@ export default function SignIn(props: LoginProps) {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            {error ? 
+            <Typography component="h1" style={{color:"#f44336"}} >
+              Wrong password
+            </Typography>: ''}
             <Button
               type="submit"
               fullWidth

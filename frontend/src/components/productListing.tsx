@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { deleteProduct, findAll } from '../api/products';
 import { Product } from '../types/product';
 import Link from '@mui/material/Link';
@@ -7,17 +7,43 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Button, Typography } from '@mui/material';
+import { Button, DialogTitle, Typography } from '@mui/material';
 import UpdateDialog from './editComponent';
 import CreateDialog from './createComponent';
+import { Box } from '@mui/system';
 
 
 
 
-const data = ['', ''];
+const data = [''];
 
 
 export default function ProductListing() {
+
+    let interval = useRef();
+
+    useEffect(() => {
+        setInterval(() => {
+            getProducts();
+        },1000)
+    },[])
+
+    const getProducts = async() => {
+        try {
+            const { data } = await findAll();
+            setProducts(data)
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }  
+
+
+
+
+
+
 
     const [open, setOpen] = React.useState(false);
     const [openCreate, setOpenCreate] = React.useState(false);
@@ -51,7 +77,6 @@ export default function ProductListing() {
 
 
     const handleDelete = async (id: number) => {
-        console.log(id);
         try {
             const data = await deleteProduct(id);
         } catch (error) {
@@ -59,28 +84,21 @@ export default function ProductListing() {
         }
     }
 
-    useEffect(() => {
-        getProducts();
-    },[])
 
-    const getProducts = async() => {
-        try {
-            const { data } = await findAll();
-            setProducts(data)
-            
-        } catch (error) {
-            console.log(error);
-            
-        }
-    }  
-
-
-
+    const disconnect = async () => {
+        localStorage.removeItem('token');
+        return window.location.reload();
+    }
 
 
     return (
-    <React.Fragment>
-      <Table size="small">
+    <React.Fragment >
+        <div>
+        <Button variant="outlined" color="error" sx={{ m: 2 }} onClick={() => disconnect() }>
+        Disconnect
+        </Button> 
+        </div>
+      <Table >
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
@@ -116,9 +134,8 @@ export default function ProductListing() {
                 </TableCell>
             </TableRow>)
                 }) : 
-            <TableRow key="1">
-                <TableCell>Rien</TableCell>
-            </TableRow>
+                <DialogTitle>Create a product</DialogTitle>
+                
             }
         </TableBody>
     </Table>
@@ -134,9 +151,12 @@ export default function ProductListing() {
         open={openCreate}
         onClose={handleCloseCreate}
     />
-    <Button variant="outlined" color="error" onClick={() => handleClickOpenCreate() }>
-        Creer
-    </Button> 
+    <Box textAlign='center' sx={{ m: 5 }} >
+        <Button variant="outlined" size="large"sx={{ width: '75%' }} onClick={() => handleClickOpenCreate() }>
+            Creer
+        </Button> 
+    </Box>
+
     </React.Fragment>
     );
 }

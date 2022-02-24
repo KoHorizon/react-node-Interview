@@ -80,11 +80,11 @@ export default function UpdateDialog(props: SimpleDialogProps) {
         available
     }
 
-
+    
     try {
         const data = await createProduct(createObj);
     } catch (error) {
-      console.log(error);
+      console.log(error,'error');
     }
   };
 
@@ -144,6 +144,7 @@ export default function UpdateDialog(props: SimpleDialogProps) {
               name="price"
               label="price"
               type="number"
+              InputProps={{ inputProps: { min: 0, max: 2200 } }}
               id="price"
             />
             <TextField
@@ -153,6 +154,7 @@ export default function UpdateDialog(props: SimpleDialogProps) {
               name="rating"
               label="rating"
               type="number"
+              InputProps={{ inputProps: { min: 0, max: 10 } }}
               id="rating"
             />
             <TextField
@@ -162,6 +164,7 @@ export default function UpdateDialog(props: SimpleDialogProps) {
               name="warranty_years"
               label="warranty_years"
               type="number"
+              InputProps={{ inputProps: { min: 0, max: 10 } }}
               id="password"
             />
             <FormControlLabel
@@ -175,6 +178,7 @@ export default function UpdateDialog(props: SimpleDialogProps) {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 1 }}
+              onClick={handleClose}
             >
               CREATE
             </Button>
