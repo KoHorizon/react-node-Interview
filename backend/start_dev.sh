@@ -1,4 +1,1 @@
-npm install -g ts-node
-
-yarn install
-yarn run dev
+yarn install && yarn run dev
