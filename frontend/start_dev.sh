@@ -1,2 +1,1 @@
-yarn
-yarn dev
+yarn install && yarn run dev
